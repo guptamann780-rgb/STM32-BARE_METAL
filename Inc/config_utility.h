@@ -2,6 +2,7 @@
 #define CONFIG_UTILITY_H
 
 #include <stdint.h>
+#include "stm32f411xe.h"
 #include "stm32f4xx.h"
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -26,6 +27,7 @@ void clock_init(const clock_config *);
 //--------------------------------------------------------------------------------------------------------------------//
 typedef struct {
     uint8_t PORT_NUM;
+    GPIO_TypeDef* Port_address;
     uint8_t PIN_NUM;
     uint8_t MODER;
     uint8_t OTYPER;
@@ -34,8 +36,31 @@ typedef struct {
     uint8_t AF_VAL;     
 } gpio_config;
 
-void gpio_cfg(GPIO_TypeDef*, const gpio_config*);
+void gpio_cfg(const gpio_config*);
 
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+typedef enum{
+    usart1,             // 0
+    usart2,             // 1
+    usart6,             // 2
+    usart_count         // 3, the total count of the USART we have on board.
+}usart_select;
+
+typedef struct{
+    USART_TypeDef* instance;
+    RCC_TypeDef *clock_reg;
+    uint32_t clock_bit;
+    uint32_t bus_freq;
+    
+    gpio_config tx_pin;
+    gpio_config rx_pin;
+}usart_config;
+
+extern const usart_config USART_DEFAULTS;
+
+void usart_init(USART_TypeDef*, const usart_config*);
 //--------------------------------------------------------------------------------------------------------------------//
 
 
