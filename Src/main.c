@@ -17,6 +17,7 @@ int main(void)
     .OTYPER = 0,
     .OSPEEDR = 0,  
     .PUPDR = 0,
+    .AF_VAL = 0
     };
 
     gpio_cfg(&PC13);
@@ -29,7 +30,8 @@ int main(void)
     /* Loop forever */
 	for(;;)
     {
-        printf("U");
+        // printf("U");
+        usart_putchar(USART1, 'U');
         for (volatile int i = 0; i < 100000; i++);
     }
 

@@ -14,7 +14,7 @@ static const usart_config usart_table[usart_count] = {
     [usart1] = {
         .instance = USART1,
         .clock_reg = &(RCC->APB2ENR),
-        .clock_bit = RCC_APB2ENR_USART1EN,
+        .clock_bit = RCC_APB2ENR_USART1EN_Pos,
         .bus_freq = 96000000,
 
         .tx_pin = {
@@ -43,7 +43,7 @@ static const usart_config usart_table[usart_count] = {
     [usart2] = {
         .instance = USART2,
         .clock_reg = &(RCC->APB1ENR),
-        .clock_bit = RCC_APB1ENR_USART2EN,
+        .clock_bit = RCC_APB1ENR_USART2EN_Pos,
         .bus_freq = 48000000,
 
         .tx_pin = {
@@ -72,7 +72,7 @@ static const usart_config usart_table[usart_count] = {
     [usart6] = {
         .instance = USART6,
         .clock_reg = &(RCC->APB2ENR),
-        .clock_bit = RCC_APB2ENR_USART6EN,
+        .clock_bit = RCC_APB2ENR_USART6EN_Pos,
         .bus_freq = 96000000,
 
         .tx_pin = {
