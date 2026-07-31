@@ -32,6 +32,12 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/files.cmake)
 target_sources(${PROJECT_NAME} PRIVATE
   # User defined sources
   ${CMAKE_CURRENT_SOURCE_DIR}/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/main.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/syscall.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/sysmem.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/clock_init.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/gpio_driver.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/usart_driver.c
 )
 
 # Add include directories
@@ -39,7 +45,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   # User defined include directories
   ${CMAKE_CURRENT_SOURCE_DIR}/CMSIS/Include
   ${CMAKE_CURRENT_SOURCE_DIR}/CMSIS/Device/ST/STM32F4xx/Include
-  ${CMAKE_CURRENT_SOURCE_DIR}/Inc 
+  ${CMAKE_CURRENT_SOURCE_DIR}/Inc/
 
 )
 
@@ -52,6 +58,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 target_compile_definitions(${PROJECT_NAME} PRIVATE
   # Add additional defined symbols here
   STM32F411xE
+  DEBUG
 )
 
 # Linker options

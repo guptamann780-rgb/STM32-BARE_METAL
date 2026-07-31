@@ -13,7 +13,7 @@ typedef struct {
     uint8_t pll_p;
     uint8_t pll_q;
     uint8_t ahb_prescaler;
-    uint8_t apb_1_prescalar; // Prescaled as the clockspeed does not crosses over 50MHz.
+    uint32_t apb_1_prescalar; // Prescaled as the clockspeed does not crosses over 50MHz.
     uint8_t apb_2_prescalar; 
 } clock_config;
 
@@ -50,7 +50,7 @@ typedef enum{
 
 typedef struct{
     USART_TypeDef* instance;
-    RCC_TypeDef *clock_reg;
+    volatile uint32_t *clock_reg;
     uint32_t clock_bit;
     uint32_t bus_freq;
     
@@ -58,9 +58,11 @@ typedef struct{
     gpio_config rx_pin;
 }usart_config;
 
-extern const usart_config USART_DEFAULTS;
+void usart_init(usart_select id, uint32_t baudrate);
 
-void usart_init(USART_TypeDef*, const usart_config*);
+int _write(int file, char *ptr, int len);
+
+void usart_putchar(USART_TypeDef *usart, char c);
 //--------------------------------------------------------------------------------------------------------------------//
 
 
