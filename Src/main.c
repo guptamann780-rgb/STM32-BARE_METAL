@@ -8,6 +8,7 @@
 int main(void)
 {   
     default_clock_init();
+    SysTick_Init();
 
     gpio_config PC13 = {
     .PORT_NUM = 2,
@@ -31,8 +32,7 @@ int main(void)
 	for(;;)
     {
         printf("U");
-        // usart_putchar(USART1, 'U');
-        for (volatile int i = 0; i < 100000; i++);
+        delay_ms(5000);
     }
 
 }

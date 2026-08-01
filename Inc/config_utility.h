@@ -73,8 +73,6 @@ char usart_getchar(USART_TypeDef *usart);
 
 //SYSTICK setup
 //--------------------------------------------------------------------------------------------------------------------//
-void SysTick_Handler(void);
-
 void SysTick_Init(void);
 
 void delay_ms(uint32_t ms);

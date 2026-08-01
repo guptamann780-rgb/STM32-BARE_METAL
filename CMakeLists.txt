@@ -38,6 +38,7 @@ target_sources(${PROJECT_NAME} PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/Src/clock_init.c
   ${CMAKE_CURRENT_SOURCE_DIR}/Src/gpio_driver.c
   ${CMAKE_CURRENT_SOURCE_DIR}/Src/usart_driver.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/systick.c
 )
 
 # Add include directories

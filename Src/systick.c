@@ -23,7 +23,7 @@ void SysTick_Init(void) {
     
     // 4. Enable: Processor Clock, Interrupt, and Counter
     SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk   | SysTick_CTRL_ENABLE_Msk;
-
+    
     __enable_irq();
 }
 
