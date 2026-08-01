@@ -106,6 +106,9 @@ static const usart_config usart_table[usart_count] = {
 
 
 void usart_init(usart_select id, uint32_t baudrate) {
+
+    __disable_irq();
+
     const usart_config *hw = &usart_table[id];
 
     // 1. ENABLE CLOCK FIRST (Crucial!)
@@ -131,6 +134,8 @@ void usart_init(usart_select id, uint32_t baudrate) {
 
     stdout_usart_instance = hw->instance;
     setvbuf(stdout, NULL, _IONBF, 0);
+
+    __enable_irq();
 }
 
 //---------------------------------------------------- Retargeting the printf function.
@@ -155,3 +160,15 @@ void usart_putchar(USART_TypeDef *usart, char c) {
     // Write character to Data Register
     usart->DR = (uint8_t)c;
 }
+
+//---------------------------------------------------- Underlying reciever function.
+
+char usart_getchar(USART_TypeDef *usart){
+
+    while(!(usart->SR & USART_SR_RXNE));
+
+    return (char)(usart->DR & 0xFF);
+}
+
+//---------------------------------------------------- Abstract Reciever function.
+

@@ -30,8 +30,8 @@ int main(void)
     /* Loop forever */
 	for(;;)
     {
-        // printf("U");
-        usart_putchar(USART1, 'U');
+        printf("U");
+        // usart_putchar(USART1, 'U');
         for (volatile int i = 0; i < 100000; i++);
     }
 

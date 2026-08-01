@@ -7,6 +7,7 @@
 
 void gpio_cfg(const gpio_config* gpio_cfg)
 {
+
     GPIO_TypeDef *port = gpio_cfg->Port_address;
 
     REG_SET_BIT(&(RCC->AHB1ENR), (gpio_cfg->PORT_NUM));

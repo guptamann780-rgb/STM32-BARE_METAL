@@ -23,6 +23,8 @@ void default_clock_init(void)
 
 void clock_init(const clock_config *clock_param)
 {
+    __disable_irq();   //disabling interrupt to avoid the interuption in between clock set up.
+
     // 1. Enable HSE and wait for hardware ready flag
     REG_SET_MASK_CMSIS(&(RCC->CR), RCC_CR_HSEON);
     while(((RCC->CR) & RCC_CR_HSERDY) == 0);
@@ -62,9 +64,16 @@ void clock_init(const clock_config *clock_param)
     REG_SET_MASK_CMSIS(&(RCC->CR), RCC_CR_PLLON);    
     while(((RCC->CR) & RCC_CR_PLLRDY) == 0);
 
+    //A. Check for succesfull setting of VOS scaling to make CPU scaling work properly.
+    while(((PWR->CSR) & PWR_CSR_VOSRDY) == 0);
+
     // 8. Switch System Clock (SYSCLK) source to PLL
     REG_MODIFY_FIELD_CMSIS(&(RCC->CFGR), RCC_CFGR_SW_Msk, RCC_CFGR_SW_Pos, RCC_CFGR_SW_PLL);
 
     // 9. Wait for System Clock Switch Status (SWS) bits to acknowledge PLL selection
     while(REG_GET_FIELD_CMSIS(&(RCC->CFGR), RCC_CFGR_SWS_Msk, RCC_CFGR_SWS_Pos) != 2);
+
+    __NVIC_SetPriorityGrouping(7); // To avoid preemption in the interrupts.
+
+    __enable_irq();
 }
