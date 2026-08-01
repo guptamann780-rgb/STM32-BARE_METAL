@@ -3,7 +3,7 @@
 #include "stm32f4xx.h"
 #include "config_utility.h"
 
-volatile uint32_t system_ticks = 0;
+static volatile uint32_t system_ticks = 0;
 
 void SysTick_Handler(void){
     system_ticks++;
@@ -32,4 +32,8 @@ void delay_ms(uint32_t ms){
 
     while((system_ticks - start_ticks) < ms);
 
+}
+
+uint32_t get_system_ticks(void){
+    return system_ticks;
 }

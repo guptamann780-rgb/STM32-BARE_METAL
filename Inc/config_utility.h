@@ -66,11 +66,20 @@ void usart_init(usart_select id, uint32_t baudrate);
 int _write(int file, char *ptr, int len);
 
 void usart_putchar(USART_TypeDef *usart, char c);
+
+char usart_getchar(USART_TypeDef *usart);
+
 //--------------------------------------------------------------------------------------------------------------------//
 
 //SYSTICK setup
 //--------------------------------------------------------------------------------------------------------------------//
+void SysTick_Handler(void);
 
+void SysTick_Init(void);
+
+void delay_ms(uint32_t ms);
+
+uint32_t get_system_ticks(void);
 
 //--------------------------------------------------------------------------------------------------------------------//
 
