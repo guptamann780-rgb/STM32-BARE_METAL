@@ -4,9 +4,12 @@
 #include "stm32f411xe.h"
 #include "config_utility.h"
 #include "peripherals_utility.h"
+#include "ring_buffer.h"
 
 // Track which USART port is currently used for printf / stdout
 static USART_TypeDef *stdout_usart_instance = USART1;
+
+static volatile struct ring_buffer uart_buffer;
 
 //---------------------------------------------------- Hardware descrpition for the usart.
 
@@ -109,6 +112,8 @@ void usart_init(usart_select id, uint32_t baudrate) {
 
     __disable_irq();
 
+    init_ring_buffer(&uart_buffer);
+
     const usart_config *hw = &usart_table[id];
 
     // 1. ENABLE CLOCK FIRST (Crucial!)
@@ -170,5 +175,43 @@ char usart_getchar(USART_TypeDef *usart){
     return (char)(usart->DR & 0xFF);
 }
 
-//---------------------------------------------------- Abstract Reciever function.
+//---------------------------------------------------- Interrupt Reciever enable function and future improvemnt for more interrupt base toggling.
+void usart_ie(USART_TypeDef *usart){
+    __disable_irq();
 
+    REG_SET_BIT(&(usart->CR1),USART_CR1_RXNEIE_Pos);
+
+    REG_SET_BIT(&(usart->CR3),USART_CR3_EIE_Pos);
+
+    NVIC_DisableIRQ(USART1_IRQn);
+    NVIC_SetPriority(USART1_IRQn, 2);
+    NVIC_ClearPendingIRQ(USART1_IRQn);
+    NVIC_EnableIRQ(USART1_IRQn);
+
+    __enable_irq();
+}
+
+
+//---------------------------------------------------- Interrupt handler Reciever function.
+
+void USART1_IRQHandler(void){
+    uint32_t status = USART1->SR;
+
+    if(status & USART_SR_RXNE){
+        char c = (USART1->DR) & 0xFF;
+
+        if(!push(c, (struct ring_buffer *)&uart_buffer));
+    }
+
+    if (status & (USART_SR_ORE | USART_SR_FE | USART_SR_NE)) {
+        (void)USART1->SR;
+        (void)USART1->DR;
+    }
+}
+
+//---------------------------------------------------- Buffer emptying function.
+void usart_buffer_read(char* read_buffer){
+    
+    if(!pop(&uart_buffer, read_buffer));
+
+}

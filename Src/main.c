@@ -3,6 +3,8 @@
 #include "stm32f4xx.h"
 #include "config_utility.h"
 #include "peripherals_utility.h"
+#include "ring_buffer.h"
+#include <string.h>
 
 
 int main(void)

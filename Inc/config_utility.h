@@ -61,13 +61,17 @@ typedef struct{
     gpio_config rx_pin;
 }usart_config;
 
-void usart_init(usart_select id, uint32_t baudrate);
+void usart_init(usart_select , uint32_t );
 
-int _write(int file, char *ptr, int len);
+int _write(int , char *, int);
 
-void usart_putchar(USART_TypeDef *usart, char c);
+void usart_putchar(USART_TypeDef *, char);
 
-char usart_getchar(USART_TypeDef *usart);
+char usart_getchar(USART_TypeDef *);
+
+void usart_ie(USART_TypeDef *);
+
+void usart_buffer_read(char*);
 
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -75,7 +79,7 @@ char usart_getchar(USART_TypeDef *usart);
 //--------------------------------------------------------------------------------------------------------------------//
 void SysTick_Init(void);
 
-void delay_ms(uint32_t ms);
+void delay_ms(uint32_t);
 
 uint32_t get_system_ticks(void);
 
